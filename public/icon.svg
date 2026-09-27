@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="buxarGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#064e3b"/>
+      <stop offset="100%" stop-color="#047857"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="110" fill="url(#buxarGrad)"/>
+  <!-- House Roof -->
+  <polygon points="256,90 80,240 130,240 130,420 382,420 382,240 432,240" fill="#ffffff"/>
+  <!-- Door / Wrench -->
+  <path d="M256 190 L290 224 L270 244 L295 269 C302 266 310 266 317 270 C328 276 333 290 328 301 L355 328 C361 334 361 344 355 350 L345 360 C339 366 329 366 323 360 L296 333 C285 338 271 333 265 322 C261 315 261 307 264 300 L239 275 L219 295 L185 261 Z" fill="#047857"/>
+  <!-- Wrench Notch -->
+  <circle cx="337" cy="342" r="6" fill="#ffffff"/>
+</svg>

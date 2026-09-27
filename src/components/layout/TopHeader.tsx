@@ -10,8 +10,10 @@ import {
   UserCheck,
   ChevronDown,
   UserPlus,
+  Download,
 } from 'lucide-react';
 import { AuthModal } from '../auth/AuthModal';
+import { PWAInstallModal } from '../common/PWAInstallModal';
 
 export const TopHeader: React.FC = () => {
   const {
@@ -23,10 +25,12 @@ export const TopHeader: React.FC = () => {
     loginAsRole,
     resetAllDemoData,
     unreadNotificationsCount,
+    isCloudConnected,
   } = useApp();
 
   const [showUserDropdown, setShowUserDropdown] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const [showPwaModal, setShowPwaModal] = useState(false);
 
   const navItems: { mode: ViewMode; label: string; icon: React.ReactNode }[] = [
     { mode: 'MOBILE_APP', label: 'Android App', icon: <Smartphone className="w-4 h-4" /> },
@@ -46,9 +50,14 @@ export const TopHeader: React.FC = () => {
           >
             Buxar Home Services
           </button>
-          <span className="hidden lg:inline text-xs text-slate-400 font-normal">
-            · Buxar, Bihar
-          </span>
+          <div className="hidden lg:flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-50 border border-emerald-200 text-[11px] font-semibold text-emerald-800">
+            <span
+              className={`w-2 h-2 rounded-full ${
+                isCloudConnected ? 'bg-emerald-500 animate-pulse' : 'bg-amber-400'
+              }`}
+            />
+            <span>{isCloudConnected ? 'Cloud DB Live' : 'Connecting DB...'}</span>
+          </div>
         </div>
 
         {/* Zone 2: Navigation Modes */}
@@ -74,6 +83,15 @@ export const TopHeader: React.FC = () => {
 
         {/* Zone 3: User Profile & Actions */}
         <div className="flex items-center gap-2 sm:gap-2.5">
+          <button
+            onClick={() => setShowPwaModal(true)}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold transition-all shadow-xs"
+          >
+            <Download className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Install App (Free)</span>
+            <span className="sm:hidden">Install</span>
+          </button>
+
           <button
             onClick={() => setShowAuthModal(true)}
             className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-semibold transition-colors"
@@ -158,6 +176,7 @@ export const TopHeader: React.FC = () => {
       </div>
 
       <AuthModal isOpen={showAuthModal} onClose={() => setShowAuthModal(false)} />
+      <PWAInstallModal isOpen={showPwaModal} onClose={() => setShowPwaModal(false)} />
     </header>
   );
 };

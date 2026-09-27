@@ -1,0 +1,101 @@
+{
+  "entities": {
+    "User": {
+      "path": "/users/{userId}",
+      "description": "User profiles for customers, technicians, and administrators in Buxar.",
+      "fields": {
+        "id": { "type": "string", "description": "Unique user ID" },
+        "name": { "type": "string", "description": "Full name" },
+        "email": { "type": "string", "description": "Email address" },
+        "phone": { "type": "string", "description": "Phone number" },
+        "role": { "type": "string", "description": "Role: CUSTOMER, TECHNICIAN, or ADMIN" },
+        "avatar": { "type": "string", "optional": true, "description": "Avatar URL" },
+        "createdAt": { "type": "string", "description": "ISO timestamp" }
+      }
+    },
+    "TechnicianProfile": {
+      "path": "/technicians/{technicianId}",
+      "description": "Public and verified technician partner profiles in Buxar.",
+      "fields": {
+        "id": { "type": "string", "description": "Technician ID" },
+        "userId": { "type": "string", "description": "Linked user ID" },
+        "name": { "type": "string", "description": "Full name" },
+        "phone": { "type": "string", "description": "Phone number" },
+        "email": { "type": "string", "description": "Email address" },
+        "categoryId": { "type": "string", "description": "Primary service trade category" },
+        "categoryName": { "type": "string", "description": "Trade name" },
+        "experienceYears": { "type": "number", "description": "Years of trade experience" },
+        "skills": { "type": "array", "description": "Array of skill tags" },
+        "isOnline": { "type": "boolean", "description": "Real-time duty availability" },
+        "verificationStatus": { "type": "string", "description": "PENDING, APPROVED, REJECTED, SUSPENDED" },
+        "aadhaarNumber": { "type": "string", "description": "Aadhaar identification" },
+        "rating": { "type": "number", "description": "Average customer rating" },
+        "reviewCount": { "type": "number", "description": "Total review count" },
+        "completedJobsCount": { "type": "number", "description": "Count of completed jobs" },
+        "baseArea": { "type": "string", "description": "Buxar ward or locality" },
+        "bio": { "type": "string", "description": "Short bio" }
+      }
+    },
+    "ServiceCategory": {
+      "path": "/service_categories/{categoryId}",
+      "description": "Available home service categories and base inspection visiting charges.",
+      "fields": {
+        "id": { "type": "string", "description": "Category ID" },
+        "name": { "type": "string", "description": "Category name" },
+        "slug": { "type": "string", "description": "URL slug" },
+        "iconName": { "type": "string", "description": "Lucide icon name" },
+        "basePrice": { "type": "number", "description": "Visiting fee in INR" },
+        "description": { "type": "string", "description": "Category description" },
+        "commonProblems": { "type": "array", "description": "Pre-configured issue templates" },
+        "image": { "type": "string", "description": "Image asset path" },
+        "active": { "type": "boolean", "description": "Active in Buxar" }
+      }
+    },
+    "ServiceBooking": {
+      "path": "/bookings/{bookingId}",
+      "description": "End-to-end service requests with real-time lifecycle tracking.",
+      "fields": {
+        "id": { "type": "string", "description": "Booking ID" },
+        "bookingNumber": { "type": "string", "description": "Human-readable number (e.g., BXR-2026-081)" },
+        "customerId": { "type": "string", "description": "Customer user ID" },
+        "customerName": { "type": "string", "description": "Customer name" },
+        "customerPhone": { "type": "string", "description": "Customer phone" },
+        "customerAddress": { "type": "string", "description": "Detailed street address" },
+        "buxarArea": { "type": "string", "description": "Buxar locality or ward" },
+        "serviceCategoryId": { "type": "string", "description": "Service category ID" },
+        "serviceCategoryName": { "type": "string", "description": "Service category title" },
+        "specificIssue": { "type": "string", "description": "Short summary of issue" },
+        "problemDescription": { "type": "string", "description": "Detailed problem description" },
+        "photoUrl": { "type": "string", "optional": true, "description": "Uploaded problem photo URL" },
+        "preferredDate": { "type": "string", "description": "YYYY-MM-DD" },
+        "preferredTimeSlot": { "type": "string", "description": "Time window" },
+        "urgency": { "type": "string", "description": "STANDARD or URGENT" },
+        "technicianId": { "type": "string", "optional": true, "description": "Assigned technician ID" },
+        "technicianName": { "type": "string", "optional": true, "description": "Technician name" },
+        "technicianPhone": { "type": "string", "optional": true, "description": "Technician phone" },
+        "status": { "type": "string", "description": "REQUESTED, ACCEPTED, REJECTED, CONFIRMED, ON_THE_WAY, STARTED, COMPLETED, CANCELLED" },
+        "statusHistory": { "type": "array", "description": "Audit timestamps for status changes" },
+        "price": { "type": "number", "description": "Visiting fee in INR" },
+        "paymentMethod": { "type": "string", "description": "CASH_AFTER_SERVICE or UPI_ONLINE" },
+        "otpCode": { "type": "string", "optional": true, "description": "4-digit arrival OTP" },
+        "review": { "type": "object", "optional": true, "description": "Customer review and 1-5 rating" },
+        "createdAt": { "type": "string", "description": "Creation timestamp" },
+        "updatedAt": { "type": "string", "description": "Last update timestamp" }
+      }
+    },
+    "AppNotification": {
+      "path": "/notifications/{notificationId}",
+      "description": "Real-time dispatch and status notification records.",
+      "fields": {
+        "id": { "type": "string", "description": "Notification ID" },
+        "targetRole": { "type": "string", "description": "Target role" },
+        "targetUserId": { "type": "string", "description": "Target user ID" },
+        "title": { "type": "string", "description": "Notification title" },
+        "message": { "type": "string", "description": "Notification text" },
+        "timestamp": { "type": "string", "description": "ISO timestamp" },
+        "read": { "type": "boolean", "description": "Read flag" },
+        "bookingId": { "type": "string", "optional": true, "description": "Associated booking ID" }
+      }
+    }
+  }
+}
