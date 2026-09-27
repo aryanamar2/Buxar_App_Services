@@ -1,0 +1,6 @@
+{
+  "name": "Buxar Home Services",
+  "description": "On-demand home services platform for Buxar, Bihar — connecting customers with verified local technicians for plumbing, electrical, AC repair, carpentry, and home cleaning with Android app and Admin portal.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
