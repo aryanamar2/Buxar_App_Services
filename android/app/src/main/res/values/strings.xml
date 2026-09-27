@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Buxar Home Services</string>
+    <string name="title_activity_main">Buxar Home Services</string>
+    <string name="package_name">com.buxar.homeservices</string>
+    <string name="custom_url_scheme">com.buxar.homeservices</string>
+</resources>

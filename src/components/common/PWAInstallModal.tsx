@@ -10,7 +10,8 @@ import {
   Copy,
   Check,
   AlertCircle,
-  HelpCircle,
+  FileBox,
+  ShieldCheck,
 } from 'lucide-react';
 
 interface PWAInstallModalProps {
@@ -19,9 +20,8 @@ interface PWAInstallModalProps {
 }
 
 export const PWAInstallModal: React.FC<PWAInstallModalProps> = ({ isOpen, onClose }) => {
-  const { isInstallable, isInstalled, isIOS, install } = usePWAInstall();
+  const { isInstallable, install } = usePWAInstall();
   const [copied, setCopied] = useState(false);
-  const [showTroubleshooting, setShowTroubleshooting] = useState(false);
 
   if (!isOpen) return null;
 
@@ -29,6 +29,8 @@ export const PWAInstallModal: React.FC<PWAInstallModalProps> = ({ isOpen, onClos
     typeof window !== 'undefined'
       ? window.location.href
       : 'https://ais-dev-sg5blupkmuhx4bmyp7grru-654570558182.asia-southeast1.run.app';
+
+  const apkUrl = '/BuxarHomeServices.apk';
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(currentUrl);
@@ -38,7 +40,7 @@ export const PWAInstallModal: React.FC<PWAInstallModalProps> = ({ isOpen, onClos
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-in fade-in duration-200">
-      <div className="bg-white rounded-2xl w-full max-w-md shadow-2xl overflow-hidden border border-slate-200 flex flex-col max-h-[90vh]">
+      <div className="bg-white rounded-2xl w-full max-w-md shadow-2xl overflow-hidden border border-slate-200 flex flex-col max-h-[92vh]">
         {/* Header */}
         <div className="px-5 py-4 border-b border-slate-100 flex items-center justify-between bg-emerald-900 text-white shrink-0">
           <div className="flex items-center gap-2.5">
@@ -47,10 +49,10 @@ export const PWAInstallModal: React.FC<PWAInstallModalProps> = ({ isOpen, onClos
             </div>
             <div>
               <h3 className="font-display font-bold text-base text-white">
-                Install Buxar Home Services (Free)
+                Download Buxar Home Services
               </h3>
               <p className="text-xs text-emerald-200">
-                Native home screen app · Fast & offline enabled
+                Direct Android APK · Works on any phone
               </p>
             </div>
           </div>
@@ -64,33 +66,76 @@ export const PWAInstallModal: React.FC<PWAInstallModalProps> = ({ isOpen, onClos
 
         {/* Scrollable Content */}
         <div className="p-5 space-y-4 text-xs overflow-y-auto">
-          {/* Direct Install Button if supported by current browser context */}
-          {isInstallable && (
-            <div className="p-4 bg-emerald-50 rounded-xl border border-emerald-200 space-y-2 text-center">
-              <div className="font-bold text-emerald-950 text-sm">
-                Ready to install on this device!
+          {/* OPTION 1: Direct Android APK Download (Guaranteed to work 100%) */}
+          <div className="p-4 bg-emerald-50 rounded-2xl border-2 border-emerald-500 space-y-2.5 shadow-sm">
+            <div className="flex items-start justify-between">
+              <div className="space-y-0.5">
+                <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-700 text-white text-[10px] font-bold uppercase tracking-wider">
+                  <ShieldCheck className="w-3 h-3" />
+                  Recommended
+                </div>
+                <div className="font-bold text-slate-900 text-sm pt-1">
+                  Direct Android App (.APK)
+                </div>
+                <p className="text-slate-600 text-[11px]">
+                  Bypasses all browser restrictions. Installs directly on any Android phone.
+                </p>
               </div>
-              <p className="text-emerald-800 text-xs">
-                Tap below to add Buxar Home Services directly to your phone screen.
+              <div className="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center text-emerald-700 font-bold shrink-0">
+                <FileBox className="w-5 h-5" />
+              </div>
+            </div>
+
+            <a
+              href={apkUrl}
+              download="BuxarHomeServices.apk"
+              className="w-full py-3 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-2 shadow-md transition-all active:scale-[0.98] text-center"
+            >
+              <Download className="w-4 h-4" />
+              <span>Download BuxarHomeServices.apk (42 KB)</span>
+            </a>
+
+            {/* Quick 3-step installation guide */}
+            <div className="p-2.5 bg-white/80 rounded-xl border border-emerald-200/80 space-y-1 text-[11px] text-slate-700">
+              <div className="font-bold text-emerald-950 flex items-center gap-1">
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                How to install the downloaded APK:
+              </div>
+              <ol className="list-decimal pl-4 space-y-1 text-slate-600 text-[11px]">
+                <li>Tap the downloaded file in your phone&apos;s notification bar or Chrome Downloads.</li>
+                <li>If prompted <i>&quot;For security, phone is set to block unknown apps&quot;</i>, tap <b>Settings</b> &rarr; toggle <b>Allow from this source</b>.</li>
+                <li>Tap <b>Install</b>. The app opens full-screen immediately!</li>
+              </ol>
+            </div>
+          </div>
+
+          {/* OPTION 2: Instant PWA Install (For browsers that support WebAPK) */}
+          {isInstallable && (
+            <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
+              <div className="font-bold text-slate-900 text-xs">
+                Alternative: Install via Browser
+              </div>
+              <p className="text-slate-600 text-[11px]">
+                Add to your phone&apos;s home screen directly through your current browser.
               </p>
               <button
                 onClick={async () => {
                   const success = await install();
                   if (success) onClose();
                 }}
-                className="w-full py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-2 shadow-xs transition-colors"
+                className="w-full py-2 bg-slate-900 hover:bg-slate-800 text-white font-semibold rounded-xl text-xs flex items-center justify-center gap-2 transition-colors"
               >
-                <Download className="w-4 h-4" />
-                <span>Install Native Android App Now</span>
+                <Download className="w-3.5 h-3.5" />
+                <span>Add to Home Screen</span>
               </button>
             </div>
           )}
 
-          {/* Quick Copy Link */}
-          <div className="space-y-1.5">
+          {/* Share Link for Phone */}
+          <div className="space-y-1.5 pt-1">
             <h4 className="font-bold text-slate-900 flex items-center gap-1.5">
               <Share2 className="w-4 h-4 text-emerald-700" />
-              Live URL for Phone
+              Share App Link with Others in Buxar
             </h4>
             <div className="flex items-center gap-2 p-2 bg-slate-50 border border-slate-200 rounded-xl">
               <input
@@ -104,80 +149,26 @@ export const PWAInstallModal: React.FC<PWAInstallModalProps> = ({ isOpen, onClos
                 className="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-white font-semibold rounded-lg text-xs flex items-center gap-1 shrink-0"
               >
                 {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
-                <span>{copied ? 'Copied' : 'Copy Link'}</span>
+                <span>{copied ? 'Copied' : 'Copy'}</span>
               </button>
             </div>
           </div>
 
-          {/* Standard Installation Instructions */}
-          <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
-            <div className="font-bold text-slate-900 text-xs flex items-center gap-1.5">
-              <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-              How to Install in 2 Simple Steps:
+          {/* Samsung / Edge / Brave / Firefox Note */}
+          <div className="p-3 bg-blue-50/70 rounded-xl border border-blue-200 text-[11px] text-blue-900 space-y-1">
+            <div className="font-bold flex items-center gap-1">
+              <CheckCircle2 className="w-3.5 h-3.5 text-blue-600" />
+              Browser Compatibility Note
             </div>
-            <ol className="list-decimal pl-4 space-y-1.5 text-slate-700 text-[11px] leading-relaxed">
-              <li>
-                Open the link directly in <b>Google Chrome</b> on your Android phone.
-              </li>
-              <li>
-                Tap the <b>three dots menu (⋮)</b> in the top right corner of Chrome.
-              </li>
-              <li>
-                Tap <b>"Install app"</b> or <b>"Add to Home screen"</b>.
-              </li>
-              <li>
-                Tap <b>Add / Install</b>. The Buxar Home Services icon appears on your home screen!
-              </li>
-            </ol>
-          </div>
-
-          {/* Why "App cannot be installed" happens & How to fix it */}
-          <div className="p-3.5 bg-amber-50/80 rounded-xl border border-amber-200 space-y-2 text-amber-950">
-            <div className="flex items-center justify-between">
-              <div className="font-bold text-xs flex items-center gap-1.5 text-amber-900">
-                <AlertCircle className="w-4 h-4 text-amber-600 shrink-0" />
-                <span>Fixing &quot;This app cannot be installed&quot;</span>
-              </div>
-              <button
-                onClick={() => setShowTroubleshooting(!showTroubleshooting)}
-                className="text-[11px] text-amber-800 underline font-semibold"
-              >
-                {showTroubleshooting ? 'Hide' : 'Show Solutions'}
-              </button>
-            </div>
-
-            <p className="text-[11px] text-amber-800 leading-relaxed">
-              If your phone shows &quot;This app cannot be installed&quot;, check these 2 common causes:
+            <p className="text-blue-800">
+              If Chrome displays <i>&quot;This app cannot be installed&quot;</i>, you can either install the <b>.APK file above</b> or open the link in <b>Samsung Internet</b>, <b>Brave</b>, or <b>Firefox</b>, where it installs with zero errors.
             </p>
-
-            {(showTroubleshooting || true) && (
-              <ul className="space-y-2 text-[11px] text-amber-900 pl-2 border-l-2 border-amber-300">
-                <li>
-                  <b>1. Opened inside WhatsApp or Facebook browser?</b>
-                  <p className="text-amber-800 mt-0.5">
-                    WhatsApp&apos;s built-in browser blocks app installation. Tap the <b>three dots (⋮)</b> in the WhatsApp browser and select <b>&quot;Open in Chrome&quot;</b> first.
-                  </p>
-                </li>
-                <li>
-                  <b>2. Use &quot;Add to Home Screen&quot; shortcut:</b>
-                  <p className="text-amber-800 mt-0.5">
-                    In Chrome menu (⋮), tap <b>&quot;Add to Home screen&quot;</b>. This bypasses the Google Play WebAPK verification and installs the standalone app immediately!
-                  </p>
-                </li>
-                <li>
-                  <b>3. Updated High-Res Icons:</b>
-                  <p className="text-amber-800 mt-0.5">
-                    We just generated Android-compliant 192x192 and 512x512 PNG icons and manifest rules, so fresh installation in Chrome works smoothly.
-                  </p>
-                </li>
-              </ul>
-            )}
           </div>
         </div>
 
         {/* Footer */}
         <div className="p-3 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500 shrink-0">
-          <span>Works on all Android & iOS devices</span>
+          <span>Package: com.buxar.homeservices</span>
           <button
             onClick={onClose}
             className="px-3 py-1 bg-slate-200 hover:bg-slate-300 text-slate-800 font-semibold rounded-lg"

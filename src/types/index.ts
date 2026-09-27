@@ -100,6 +100,7 @@ export interface ServiceBooking {
   paymentMethod: 'CASH_AFTER_SERVICE' | 'UPI_ONLINE';
   otpCode?: string;
   review?: BookingReview;
+  rejectedByTechnicianIds?: string[];
   createdAt: string;
   updatedAt: string;
 }
